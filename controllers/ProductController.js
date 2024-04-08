@@ -79,4 +79,24 @@ export const getList= async (req,res)=>{
  }
  
 }
+export const getLastProduct = async (req,res) => {
+    try {
+        const Porductos= await Porducto.findOne({
+        
+                order: [['id', 'DESC']], // Ordena por ID de forma descendente
+            
+            attributes: {
 
+                include: [
+                    [
+                        Sequelize.literal(`CONCAT('http://localhost:8000/Products/', Producto.id)`),
+                        "url"
+                    ]
+                ]
+            }
+        })
+        res.json(Porductos)
+    }catch (error){
+        res.json({message: error.message})
+    }
+}
